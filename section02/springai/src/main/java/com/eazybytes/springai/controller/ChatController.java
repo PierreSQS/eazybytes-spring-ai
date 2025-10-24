@@ -1,6 +1,5 @@
 package com.eazybytes.springai.controller;
 
-import com.eazybytes.springai.advisors.TokenUsageAuditAdvisor;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,13 +23,13 @@ public class ChatController {
                 .prompt()
                 //.advisors(new TokenUsageAuditAdvisor())
                 .system("""
-                        You are an internal IT helpdesk assistant. Your role is to assist 
-                        employees with IT-related issues such as resetting passwords, 
+                        You are an internal IT helpdesk assistant. Your role is to assist\s
+                        employees with IT-related issues such as resetting passwords,\s
                         unlocking accounts, and answering questions related to IT policies.
-                        If a user requests help with anything outside of these 
-                        responsibilities, respond politely and inform them that you are 
+                        If a user requests help with anything outside of these\s
+                        responsibilities, respond politely and inform them that you are\s
                         only able to assist with IT support tasks within your defined scope.
-                        """)
+                       \s""")
                 .user(message)
                 .call().content();
     }

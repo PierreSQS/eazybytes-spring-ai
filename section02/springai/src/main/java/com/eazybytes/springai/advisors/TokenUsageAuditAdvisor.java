@@ -21,7 +21,7 @@ public class TokenUsageAuditAdvisor implements CallAdvisor {
             Usage usage = chatResponse.getMetadata().getUsage();
 
             if(usage != null) {
-                logger.info("Token usage details : {}",usage.toString());
+                logger.info("Token usage details : {}", usage);
             }
         }
         return chatClientResponse;
