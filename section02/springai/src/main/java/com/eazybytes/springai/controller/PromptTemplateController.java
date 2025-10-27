@@ -16,6 +16,13 @@ import java.util.Map;
 @RequestMapping("/api")
 public class PromptTemplateController {
 
+    public static final String SYSTEM_PROMPT = """
+            You are a professional customer service assistant which helps drafting email
+            responses to improve the productivity of the customer support team
+            """;
+    public static final String CUSTOMER_NAME_PARAM = "customerName";
+    public static final String CUSTOMER_MSG_PARAM = "customerMessage";
+
     private final ChatClient chatClient;
 
     public PromptTemplateController(ChatClient chatClient) {
@@ -26,35 +33,46 @@ public class PromptTemplateController {
     Resource userPromptTemplate;
 
     @GetMapping("/email")
-    public String emailResponse(@RequestParam("customerName") String customerName,
-            @RequestParam("customerMessage") String customerMessage) {
+    public String emailResponse(@RequestParam(CUSTOMER_NAME_PARAM) String customerName,
+            @RequestParam(CUSTOMER_MSG_PARAM) String customerMessage) {
         return chatClient
                 .prompt()
-                .system("""
-                        You are a professional customer service assistant which helps drafting email
-                        responses to improve the productivity of the customer support team
-                        """)
+                .system(SYSTEM_PROMPT)
                 .user(promptTemplateSpec ->
                         promptTemplateSpec.text(userPromptTemplate)
-                                .param("customerName", customerName)
-                                .param("customerMessage", customerMessage))
+                                .param(CUSTOMER_NAME_PARAM, customerName)
+                                .param(CUSTOMER_MSG_PARAM, customerMessage))
                 .call().content();
     }
 
     @GetMapping("/emailV2")
-    public String emailResponseV2(@RequestParam("customerName") String customerName,
-            @RequestParam("customerMessage") String customerMessage) {
+    public String emailResponseV2(@RequestParam(CUSTOMER_NAME_PARAM) String customerName,
+                                  @RequestParam(CUSTOMER_MSG_PARAM) String customerMessage) {
 
         PromptTemplate promptTemplate = new PromptTemplate(userPromptTemplate);
         Prompt prompt = promptTemplate
-                .create(Map.of("customerName", customerName, "customerMessage", customerMessage));
+                .create(Map.of(CUSTOMER_NAME_PARAM, customerName, CUSTOMER_MSG_PARAM, customerMessage));
 
         return chatClient
                 .prompt(prompt)
-                .system("""
-                        You are a professional customer service assistant which helps drafting email
-                        responses to improve the productivity of the customer support team
-                        """)
+                .system(SYSTEM_PROMPT)
+                .call()
+                .content();
+
+    }
+
+    @GetMapping("/emailV3")
+    public String emailResponseV3(@RequestParam(CUSTOMER_NAME_PARAM) String customerName,
+                                  @RequestParam(CUSTOMER_MSG_PARAM) String customerMessage) {
+
+        PromptTemplate promptTemplate = PromptTemplate.builder().resource(userPromptTemplate).build();
+
+        Prompt prompt = promptTemplate
+                .create(Map.of(CUSTOMER_NAME_PARAM, customerName, CUSTOMER_MSG_PARAM, customerMessage));
+
+        return chatClient
+                .prompt(prompt)
+                .system(SYSTEM_PROMPT)
                 .call()
                 .content();
 
