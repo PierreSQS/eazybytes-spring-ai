@@ -25,7 +25,7 @@ public class RandomDataLoader {
                 "Docker packages applications into lightweight containers.",
                 "Kubernetes automates container orchestration at scale.",
                 "Redis is an in-memory data store used for caching.",
-                "PostgreSQL supports complex queries and full ACID compliance.",
+                "PostgresSQL supports complex queries and full ACID compliance.",
                 "Kafka is a distributed event streaming platform.",
                 "REST APIs allow stateless client-server communication.",
                 "GraphQL enables clients to fetch exactly the data they need.",
