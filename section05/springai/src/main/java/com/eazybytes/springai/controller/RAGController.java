@@ -16,11 +16,15 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/rag")
 public class RAGController {
 
+    public static final String CONVERSION_ID = "CONVERSION_ID";
     private final ChatClient chatClient;
     private final VectorStore vectorStore;
 
     @Value("classpath:/promptTemplates/systemPromptRandomDataTemplate.st")
-    Resource promptTemplate;
+    Resource randomDataPromptTemplate;
+
+    @Value("classpath:/promptTemplates/systemPromptHRTemplate.st")
+    Resource hrPromptTemplate;
 
 
     public RAGController(@Qualifier("chatMemoryChatClient") ChatClient chatClient,
@@ -31,7 +35,7 @@ public class RAGController {
 
     @GetMapping("/random/chat")
     public ResponseEntity<String> randomChat(@RequestHeader("username") String username,
-            @RequestParam("message") String message) {
+                                             @RequestParam("message") String message) {
 
         SearchRequest searchRequest = SearchRequest.builder()
                 .query(message)
@@ -45,10 +49,37 @@ public class RAGController {
 
         String responseContent = chatClient.prompt()
                 .system(promptSystemSpec -> {
-                    promptSystemSpec.text(promptTemplate);
+                    promptSystemSpec.text(randomDataPromptTemplate);
                     promptSystemSpec.param("documents", similarDocuments);
                 })
-                .advisors(advisorSpec -> advisorSpec.param("CONVERSION_ID", username))
+                .advisors(advisorSpec -> advisorSpec.param(CONVERSION_ID, username))
+                .user(message + "\n\nRelevant Information:\n" + similarDocuments)
+                .call()
+                .content();
+
+        return ResponseEntity.ok(responseContent);
+    }
+
+    @GetMapping("/document/chat")
+    public ResponseEntity<String> documentChat(@RequestHeader("username") String username,
+                                             @RequestParam("message") String message) {
+
+        SearchRequest searchRequest = SearchRequest.builder()
+                .query(message)
+                .topK(3)
+                .similarityThreshold(0.5)
+                .build();
+
+        String similarDocuments = vectorStore.similaritySearch(searchRequest).stream()
+                .map(Document::getText)
+                .collect(Collectors.joining(System.lineSeparator()));
+
+        String responseContent = chatClient.prompt()
+                .system(promptSystemSpec -> {
+                    promptSystemSpec.text(hrPromptTemplate);
+                    promptSystemSpec.param("documents", similarDocuments);
+                })
+                .advisors(advisorSpec -> advisorSpec.param(CONVERSION_ID, username))
                 .user(message + "\n\nRelevant Information:\n" + similarDocuments)
                 .call()
                 .content();

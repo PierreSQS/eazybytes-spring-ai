@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component
+//@Component
 public class RandomDataLoader {
 
     private final VectorStore vectorStore;

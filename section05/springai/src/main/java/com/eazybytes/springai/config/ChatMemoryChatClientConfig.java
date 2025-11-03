@@ -30,6 +30,7 @@ public class ChatMemoryChatClientConfig {
     public ChatClient chatClient(ChatClient.Builder chatClientBuilder, ChatMemory chatMemory
     ,RetrievalAugmentationAdvisor  retrievalAugmentationAdvisor) {
         Advisor loggerAdvisor = new SimpleLoggerAdvisor();
+        // New to chapter (Sec5_Chap57)
         Advisor tokenUsageAdvisor = new TokenUsageAuditAdvisor();
         Advisor memoryAdvisor = MessageChatMemoryAdvisor.builder(chatMemory).build();
         return chatClientBuilder

@@ -52,6 +52,8 @@
 			<groupId>org.springframework.ai</groupId>
 			<artifactId>spring-ai-starter-vector-store-qdrant</artifactId>
 		</dependency>
+
+        <!-- Document Readers (New to Sec5_Chap57)-->
 		<dependency>
 			<groupId>org.springframework.ai</groupId>
 			<artifactId>spring-ai-tika-document-reader</artifactId>
@@ -61,6 +63,8 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+        <!-- Upgraded to avoid warning about 1.13.0 Qdrant client version -->
         <dependency>
             <groupId>io.qdrant</groupId>
             <artifactId>client</artifactId>
