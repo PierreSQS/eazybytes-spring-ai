@@ -12,11 +12,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.stream.Collectors;
 
+import static org.springframework.ai.chat.memory.ChatMemory.CONVERSATION_ID;
+
 @RestController
 @RequestMapping("/api/rag")
 public class RAGController {
 
-    public static final String CONVERSION_ID = "CONVERSION_ID";
     private final ChatClient chatClient;
     private final VectorStore vectorStore;
 
@@ -52,7 +53,7 @@ public class RAGController {
                     promptSystemSpec.text(randomDataPromptTemplate);
                     promptSystemSpec.param("documents", similarDocuments);
                 })
-                .advisors(advisorSpec -> advisorSpec.param(CONVERSION_ID, username))
+                .advisors(advisorSpec -> advisorSpec.param(CONVERSATION_ID, username))
                 .user(message + "\n\nRelevant Information:\n" + similarDocuments)
                 .call()
                 .content();
@@ -79,7 +80,7 @@ public class RAGController {
                     promptSystemSpec.text(hrPromptTemplate);
                     promptSystemSpec.param("documents", similarDocuments);
                 })
-                .advisors(advisorSpec -> advisorSpec.param(CONVERSION_ID, username))
+                .advisors(advisorSpec -> advisorSpec.param(CONVERSATION_ID, username))
                 .user(message + "\n\nRelevant Information:\n" + similarDocuments)
                 .call()
                 .content();
