@@ -38,19 +38,24 @@ public class RAGController {
     public ResponseEntity<String> randomChat(@RequestHeader("username") String username,
                                              @RequestParam("message") String message) {
 
+        // Configure the search request used later to query the vector store
         SearchRequest searchRequest = SearchRequest.builder()
-                .query(message)
-                .topK(3)
-                .similarityThreshold(0.5)
+                .query(message)            // text to match against vectors
+                .topK(3)                   // return up to 3 nearest neighbors
+                .similarityThreshold(0.5)  // ignore results below this score
                 .build();
 
+        // collect the text of the nearest documents returned by the vector store
+        // and join them into a single string.
         String similarDocuments = vectorStore.similaritySearch(searchRequest).stream()
+                // extracts the plain text from each Document
                 .map(Document::getText)
                 .collect(Collectors.joining(System.lineSeparator()));
 
         String responseContent = chatClient.prompt()
                 .system(promptSystemSpec -> {
                     promptSystemSpec.text(randomDataPromptTemplate);
+                    // the similar documents are then inserted into the prompt sent to the chat client
                     promptSystemSpec.param("documents", similarDocuments);
                 })
                 .advisors(advisorSpec -> advisorSpec.param(CONVERSATION_ID, username))
