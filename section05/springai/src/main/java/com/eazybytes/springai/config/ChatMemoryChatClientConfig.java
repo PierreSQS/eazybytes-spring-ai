@@ -25,6 +25,7 @@ public class ChatMemoryChatClientConfig {
                 .chatMemoryRepository(jdbcChatMemoryRepository).build();
     }
 
+    // ChatClient with ChatMemory and RetrievalAugmentationAdvisor
     @Bean("chatMemoryChatClient")
     public ChatClient chatClient(ChatClient.Builder chatClientBuilder, ChatMemory chatMemory
     ,RetrievalAugmentationAdvisor  retrievalAugmentationAdvisor) {
