@@ -1,5 +1,7 @@
 package com.eazybytes.springai.rag;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.document.Document;
@@ -16,8 +18,8 @@ public class WebSearchDocumentRetriever implements DocumentRetriever {
 
     private static final Logger logger = LoggerFactory.getLogger(WebSearchDocumentRetriever.class);
 
-    private static final String TAVILY_API_KEY = "TAVILY_API_KEY";
-    private static final String TAVILY_BASE_URL = "https://tavily.com/api/v1/search";
+    private static final String TAVILY_API_KEY = "TAVILY_SEARCH_API_KEY";
+    private static final String TAVILY_BASE_URL = "https://api.tavily.com/search";
     private static final int DEFAULT_RESULT_LIMIT = 10;
 
     private final int resultLimit;
@@ -50,6 +52,16 @@ public class WebSearchDocumentRetriever implements DocumentRetriever {
     @Override
     public List<Document> retrieve(@NonNull Query query) {
         return List.of();
+    }
+
+    // DATA FOR TAVILY-SERVICE API
+    // tavily request payload
+    @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+    record TavilyRequestPayload(String query, String searchDepth, int maxResults) {}
+
+    // tavily response payload
+    record TavilyResponsePayload(List<Hit> results) {
+        record Hit(String title, String url, String content, Double score) {}
     }
 
     public static Builder builder() {
