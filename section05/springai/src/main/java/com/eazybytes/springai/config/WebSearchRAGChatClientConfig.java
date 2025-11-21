@@ -44,7 +44,9 @@ public class WebSearchRAGChatClientConfig {
         // RetrievalAugmentationAdvisor using WebSearchDocumentRetriever
         var webSearchRAGAdvisor = RetrievalAugmentationAdvisor.builder()
                 .documentRetriever(WebSearchDocumentRetriever.builder()
-                        // restClient will be used for making HTTP calls to TAVILY API
+                        // configure the restClient to the Web Database
+                        // limits the number of documents/results the retriever
+                        // will return per query to 5
                         .restClientBuilder(restClientBuilder).maxResults(5).build())
                 .build();
 
