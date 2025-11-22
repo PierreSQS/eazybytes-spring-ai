@@ -59,6 +59,9 @@ public class WebSearchDocumentRetriever implements DocumentRetriever {
         String q = query.text();
         Assert.hasText(q, "query.text() cannot be empty");
 
+        // same as on line 56
+        // logger.info("##### The Query for searching Document: {} ####", q);
+
         TavilyResponsePayload response = restClient.post()
                 .body(new TavilyRequestPayload(q, "advanced", resultLimit))
                 .retrieve()
