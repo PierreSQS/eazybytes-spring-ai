@@ -23,12 +23,10 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-		<!-- PLEASE NOTE THE OPENAI MODEL; ALTHOUGH WE ARE USING A GEMMA3 MODEL.
-		     The note is related to the fact that we branched from the llama model
-		      e.g., from Sec1_Chap8 -->
+		<!-- New to Sec1_Chap8 - AWS Bedrock -->
         <dependency>
 			<groupId>org.springframework.ai</groupId>
-			<artifactId>spring-ai-starter-model-openai</artifactId>
+			<artifactId>spring-ai-starter-model-bedrock-converse</artifactId>
 		</dependency>
 
 		<dependency>
