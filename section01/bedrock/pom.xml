@@ -5,39 +5,30 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.5.0</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<version>3.5.8</version>
+		<relativePath/> <!-- lookup parent from the repository -->
 	</parent>
 	<groupId>com.eazybytes</groupId>
 	<artifactId>bedrock</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>bedrock</name>
 	<description>Demo project of Spring AI and Docker Model</description>
-	<url/>
-	<licenses>
-		<license/>
-	</licenses>
-	<developers>
-		<developer/>
-	</developers>
-	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
-	</scm>
+
 	<properties>
 		<java.version>21</java.version>
-		<spring-ai.version>1.0.0</spring-ai.version>
+		<spring-ai.version>1.1.0</spring-ai.version>
 	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-		<dependency>
+		<!-- PLEASE NOTE THE OPENAI MODEL; ALTHOUGH WE ARE USING A GEMMA3 MODEL.
+		     The note is related to the fact that we branched from the llama model
+		      e.g., from Sec1_Chap8 -->
+        <dependency>
 			<groupId>org.springframework.ai</groupId>
-			<artifactId>spring-ai-starter-model-bedrock-converse</artifactId>
+			<artifactId>spring-ai-starter-model-openai</artifactId>
 		</dependency>
 
 		<dependency>
@@ -66,6 +57,21 @@
 
 	<build>
 		<plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <!--
+                    This is the recommended way to use Mockito with Maven Surefire Plugin.
+                    But does not work at the moment.
+                    <argLine>@{argLine} -javaagent:${org.mockito:mockito-core:jar}</argLine>
+                    -->
+                    <argLine>
+                        -javaagent:${settings.localRepository}/org/mockito/mockito-core/${mockito.version}/mockito-core-${mockito.version}.jar
+                        -Xshare:off
+                    </argLine>
+                </configuration>
+            </plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
