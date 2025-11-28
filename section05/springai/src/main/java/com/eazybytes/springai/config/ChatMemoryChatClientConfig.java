@@ -1,6 +1,7 @@
 package com.eazybytes.springai.config;
 
 import com.eazybytes.springai.advisors.TokenUsageAuditAdvisor;
+import com.eazybytes.springai.rag.PIIMaskingDocumentPostProcessor;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
@@ -45,6 +46,7 @@ public class ChatMemoryChatClientConfig {
         return RetrievalAugmentationAdvisor.builder()
                 .documentRetriever(VectorStoreDocumentRetriever.builder().vectorStore(vectorStore)
                         .topK(3).similarityThreshold(0.5).build())
+                .documentPostProcessors(PIIMaskingDocumentPostProcessor.builder())
                 .build();
     }
 }
