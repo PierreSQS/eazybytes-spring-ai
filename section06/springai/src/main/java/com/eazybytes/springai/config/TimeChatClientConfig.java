@@ -2,6 +2,7 @@ package com.eazybytes.springai.config;
 
 import com.eazybytes.springai.advisors.TokenUsageAuditAdvisor;
 import org.springframework.ai.chat.client.ChatClient;
+import com.eazybytes.springai.tools.Timetools;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
 import org.springframework.ai.chat.client.advisor.api.Advisor;
@@ -17,7 +18,9 @@ public class TimeChatClientConfig {
 
     // New to Sec6_Chap66
     @Bean("timeChatClient")
-    public ChatClient chatClient(ChatClient.Builder chatClientBuilder, ChatMemory chatMemory) {
+    public ChatClient chatClient(ChatClient.Builder chatClientBuilder, ChatMemory chatMemory,
+                                 Timetools timetools) {
+
         // Introduced in Sec_Chap19
         Advisor loggerAdvisor = new SimpleLoggerAdvisor();
 
@@ -28,7 +31,7 @@ public class TimeChatClientConfig {
         Advisor memoryAdvisor = MessageChatMemoryAdvisor.builder(chatMemory).build();
         return chatClientBuilder
                 .defaultAdvisors(List.of(loggerAdvisor, memoryAdvisor, tokenUsageAdvisor))
-
+                .defaultTools(timetools)
                 .build();
     }
 }
