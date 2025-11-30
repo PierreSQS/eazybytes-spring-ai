@@ -22,7 +22,7 @@ public class PIIMaskingDocumentPostProcessor implements DocumentPostProcessor {
 
     // Regex patterns for common PII
     private static final Pattern EMAIL_PATTERN = Pattern.compile(
-            "\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}\\b",
+            "\\b[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,}\\b",
             Pattern.CASE_INSENSITIVE);
     private static final Pattern PHONE_PATTERN = Pattern.compile(
             "\\b(\\+?\\d{1,3}[-.\\s]?)?\\(?\\d{3}\\)?[-.\\s]?\\d{3}[-.\\s]?\\d{4}\\b",
