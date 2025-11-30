@@ -10,13 +10,13 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 
 @Component
-public class Timetools {
+public class TimeTools {
 
-    private static final Logger logger = LoggerFactory.getLogger(Timetools.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TimeTools.class);
 
     @Tool(name="getCurrentLocalTime", description="Get the current time in the user's timezone")
     public String getCurrentLocalTime() {
-        logger.info("###  the current time in the user's timezone ###");
+        LOGGER.info("###  the current time in the user's timezone ###");
         return LocalTime.now().toString();
     }
 
@@ -25,8 +25,7 @@ public class Timetools {
             description = "Get the current time in the specified time zone.")
     public String getCurrentTime(@ToolParam(description = "Value representing the time zone") String timeZone) {
 
-        logger.info("### the current time in the timezone {} ###", timeZone);
+        LOGGER.info("### the current time in the timezone {} ###", timeZone);
         return LocalTime.now(ZoneId.of(timeZone)).toString();
     }
-
 }
