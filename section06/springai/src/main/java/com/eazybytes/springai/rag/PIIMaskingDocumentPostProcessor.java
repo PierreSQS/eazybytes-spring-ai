@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.rag.Query;
 import org.springframework.ai.rag.postretrieval.document.DocumentPostProcessor;
+import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
@@ -33,8 +34,9 @@ public class PIIMaskingDocumentPostProcessor implements DocumentPostProcessor {
     private PIIMaskingDocumentPostProcessor() {
     }
 
+    @NonNull
     @Override
-    public List<Document> process(Query query, List<Document> documents) {
+    public List<Document> process(@NonNull Query query, @NonNull  List<Document> documents) {
         Assert.notNull(query, "query cannot be null");
         Assert.notNull(documents, "documents cannot be null");
         Assert.noNullElements(documents, "documents cannot contain null elements");

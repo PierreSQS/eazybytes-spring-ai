@@ -6,9 +6,8 @@ import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-// @Component
+//@Component
 public class RandomDataLoader {
 
     private final VectorStore vectorStore;
@@ -26,7 +25,7 @@ public class RandomDataLoader {
                 "Docker packages applications into lightweight containers.",
                 "Kubernetes automates container orchestration at scale.",
                 "Redis is an in-memory data store used for caching.",
-                "PostgreSQL supports complex queries and full ACID compliance.",
+                "PostgresSQL supports complex queries and full ACID compliance.",
                 "Kafka is a distributed event streaming platform.",
                 "REST APIs allow stateless client-server communication.",
                 "GraphQL enables clients to fetch exactly the data they need.",
@@ -75,7 +74,7 @@ public class RandomDataLoader {
                 "CRM systems manage customer relationships and sales pipelines.",
                 "SWOT analysis identifies strengths, weaknesses, opportunities, and threats."
         );
-        List<Document> documents = sentences.stream().map(Document::new).collect(Collectors.toList());
+        List<Document> documents = sentences.stream().map(Document::new).toList();
         vectorStore.add(documents);
     }
 

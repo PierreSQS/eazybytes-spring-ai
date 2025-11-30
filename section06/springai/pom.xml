@@ -5,30 +5,17 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.5.3</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<version>3.5.8</version>
+		<relativePath/> <!-- lookup parent from the repository -->
 	</parent>
 	<groupId>com.eazybytes</groupId>
 	<artifactId>springai</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>spring-ai</name>
 	<description>Demo project for Spring AI</description>
-	<url/>
-	<licenses>
-		<license/>
-	</licenses>
-	<developers>
-		<developer/>
-	</developers>
-	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
-	</scm>
 	<properties>
 		<java.version>21</java.version>
-		<spring-ai.version>1.0.0</spring-ai.version>
+		<spring-ai.version>1.1.0</spring-ai.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -65,24 +52,24 @@
 			<groupId>org.springframework.ai</groupId>
 			<artifactId>spring-ai-starter-vector-store-qdrant</artifactId>
 		</dependency>
+
+        <!-- Document Readers (New to Sec5_Chap57)-->
 		<dependency>
 			<groupId>org.springframework.ai</groupId>
 			<artifactId>spring-ai-tika-document-reader</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<scope>annotationProcessor</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+        <!-- Upgraded to avoid warning about 1.13.0 Qdrant client version -->
+        <dependency>
+            <groupId>io.qdrant</groupId>
+            <artifactId>client</artifactId>
+            <version>1.15.0</version>
+        </dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
@@ -98,7 +85,22 @@
 
 	<build>
 		<plugins>
-			<plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <!--
+                    This is the recommended way to use Mockito with Maven Surefire Plugin.
+                    But does not work at the moment.
+                    <argLine>@{argLine} -javaagent:${org.mockito:mockito-core:jar}</argLine>
+                    -->
+                    <argLine>
+                        -javaagent:${settings.localRepository}/org/mockito/mockito-core/${mockito.version}/mockito-core-${mockito.version}.jar
+                        -Xshare:off
+                    </argLine>
+                </configuration>
+            </plugin>
+            <plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
