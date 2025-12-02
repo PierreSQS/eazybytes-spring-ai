@@ -34,6 +34,9 @@ public class HelpDeskController {
         String responseContent = chatClient.prompt()
                 .advisors(advisorSpec -> advisorSpec.param(CONVERSATION_ID, username))
                 .user(message + "\n\n###### Relevant Information: ######\n")
+                // AI tooling integration
+                .tools(helpDeskTools)
+                .toolContext(Map.of("username", username))
                 .call()
                 .content();
 
