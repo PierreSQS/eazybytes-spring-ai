@@ -17,7 +17,7 @@ public class HelpDeskTools {
 
     private final HelpDeskTicketService ticketService;
 
-    @Tool(name ="create Ticket",description = "Create a support ticket for IT helpdesk")
+    @Tool(name ="createTicket",description = "Create a support ticket for IT helpdesk")
     public String createTicket(@ToolParam(description = "Create Support Ticket") TicketRequest ticketRequest,
                                ToolContext toolCtx) {
 
