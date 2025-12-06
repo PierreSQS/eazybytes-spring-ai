@@ -16,7 +16,7 @@ public class MCPClientController {
 
     public MCPClientController(ChatClient.Builder chatClientBuilder, ToolCallbackProvider toolCallbackProvider) {
         this.chatClient = chatClientBuilder
-                .defaultTools(toolCallbackProvider)
+                .defaultToolCallbacks(toolCallbackProvider)
                 .defaultAdvisors(new SimpleLoggerAdvisor())
                 .build();
     }
