@@ -23,7 +23,7 @@ public class HelpDeskTools {
     @Tool(name = "createTicket", description = "Create the Support Ticket")
     String createTicket(@ToolParam(description = "Details to create a Support ticket")
     TicketRequest ticketRequest) {
-        LOGGER.info("Creating support ticket for user: {} with details: {}", ticketRequest);
+        LOGGER.info("Creating support ticket for user: {} with details: {}", ticketRequest.username(), ticketRequest);
         HelpDeskTicket savedTicket = service.createTicket(ticketRequest);
         LOGGER.info("Ticket created successfully. Ticket ID: {}, Username: {}", savedTicket.getId(), savedTicket.getUsername());
         return "Ticket #" + savedTicket.getId() + " created successfully for user " + savedTicket.getUsername();
