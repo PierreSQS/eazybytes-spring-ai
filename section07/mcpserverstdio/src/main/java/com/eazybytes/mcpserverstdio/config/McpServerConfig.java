@@ -13,6 +13,7 @@ public class McpServerConfig {
 
     @Bean
     List<ToolCallback> toolCallbacks(HelpDeskTools helpDeskTools) {
+        // Note to Sec7_Chap82: Registering HelpDeskTools as ToolCallbacks
         return List.of(ToolCallbacks.from(helpDeskTools));
     }
 }

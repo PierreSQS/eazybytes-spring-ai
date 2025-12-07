@@ -16,6 +16,8 @@ public class MCPClientController {
 
     public MCPClientController(ChatClient.Builder chatClientBuilder, ToolCallbackProvider toolCallbackProvider) {
         this.chatClient = chatClientBuilder
+                // Registering the Tool Callbacks with the Chat Client
+                // See McpServerConfig for Tool Callback definitions in project mcpserverstdio
                 .defaultToolCallbacks(toolCallbackProvider)
                 .defaultAdvisors(new SimpleLoggerAdvisor())
                 .build();
