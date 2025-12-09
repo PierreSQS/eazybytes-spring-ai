@@ -1,33 +1,33 @@
 {
   "mcpServers": {
     "spring-ai-mcp": {
-      "command": "/Users/eazybytes/.sdkman/candidates/java/current/bin/java",
+      "command": "C:\\Pierrot\\03_Tools\\Oracle_Open_JDKs\\jdk-21.0.2\\bin\\java.exe",
       "args": [
         "-jar",
-        "/Users/eazybytes/Documents/Storage/Workspaces/spring-ai/section07/mcpserverstdio/target/mcpserverstdio-0.0.1-SNAPSHOT.jar"
+        "C:\\Pierrot\\05_Git_Repositories\\Udemy\\EazyBytes\\eazybytes-spring-ai\\section07\\mcpserverstdio\\target\\mcpserverstdio-0.0.1-SNAPSHOT.jar"
       ]
     },
     "filesystem": {
-      "command": "npx",
+      "command": "npx.cmd",
       "args": [
         "-y",
         "@modelcontextprotocol/server-filesystem",
-        "/Users/eazybytes/mcp"
+        "C:\\Users\\<username_here>\\Desktop",
+        "C:\\Users\\<username_here>\\Downloads"
       ]
     },
     "github": {
       "command": "docker",
       "args": [
         "run",
+        "--name",
+        "mcp-github-server",
         "-i",
         "--rm",
         "-e",
         "GITHUB_PERSONAL_ACCESS_TOKEN",
         "ghcr.io/github/github-mcp-server"
-      ],
-      "env": {
-        "GITHUB_PERSONAL_ACCESS_TOKEN": "<eazybytes_token_here>"
-      }
+      ]
     }
   }
 }

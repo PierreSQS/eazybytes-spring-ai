@@ -4,6 +4,7 @@ import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
 import org.springframework.ai.tool.ToolCallbackProvider;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,10 +25,10 @@ public class MCPClientController {
     }
 
     @GetMapping("/mcp-client/chat")
-    public String chatWithMCPClient(@RequestParam String message) {
+    public String chatWithMCPClient(@RequestHeader(required = false) String username, @RequestParam String message) {
         return chatClient
                 .prompt()
-                .user(message)
+                .user(message + " My username is " + (username != null ? username : "anonymous)."))
                 .call()
                 .content();
     }
