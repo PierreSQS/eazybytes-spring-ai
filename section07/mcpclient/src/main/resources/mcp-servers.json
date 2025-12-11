@@ -1,8 +1,10 @@
 {
   "mcpServers": {
     "filesystem": {
-      "command": "npx.cmd",
+      "command": "cmd.exe",
       "args": [
+        "/c",
+        "npx",
         "-y",
         "@modelcontextprotocol/server-filesystem",
         "C:\\Users\\<username_here>\\Desktop",
