@@ -75,6 +75,13 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+        <!-- Upgraded to avoid warning about 1.13.0 Qdrant client version -->
+        <dependency>
+            <groupId>io.qdrant</groupId>
+            <artifactId>client</artifactId>
+            <version>1.15.0</version>
+        </dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
