@@ -55,10 +55,12 @@ public class RAGController {
     @GetMapping("/web-search/chat")
     public ResponseEntity<String> webSearchChat(@RequestHeader("username")
     String username, @RequestParam("message") String message) {
+        // queries the Web Database in the Tavily-Service API
         String answer =webSearchchatClient.prompt()
                 .advisors(a -> a.param(CONVERSATION_ID, username))
                 .user(message)
-                .call().content();
+                .call()
+				.content();
         return ResponseEntity.ok(answer);
     }
 }

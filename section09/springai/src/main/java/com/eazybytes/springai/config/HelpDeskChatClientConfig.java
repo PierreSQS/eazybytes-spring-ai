@@ -34,11 +34,4 @@ public class HelpDeskChatClientConfig {
                 .defaultAdvisors(List.of(loggerAdvisor, memoryAdvisor,tokenUsageAdvisor))
                 .build();
     }
-
-//    @Bean
-//    ToolExecutionExceptionProcessor toolExecutionExceptionProcessor() {
-//        return new DefaultToolExecutionExceptionProcessor(true);
-//    }
-
-
 }

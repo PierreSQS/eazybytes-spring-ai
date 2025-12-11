@@ -25,13 +25,16 @@ public class HelpDeskController {
 
     @GetMapping("/help-desk")
     public ResponseEntity<String> helpDesk(@RequestHeader("username") String username,
-            @RequestParam("message") String message) {
-        String answer = chatClient.prompt()
+                                           @RequestParam("message") String message) {
+        String responseContent = chatClient.prompt()
                 .advisors(a -> a.param(CONVERSATION_ID, username))
                 .user(message)
+                // AI tooling integration
                 .tools(helpDeskTools)
                 .toolContext(Map.of("username", username))
-                .call().content();
-        return ResponseEntity.ok(answer);
+                .call()
+                .content();
+
+        return ResponseEntity.ok(responseContent);
     }
 }

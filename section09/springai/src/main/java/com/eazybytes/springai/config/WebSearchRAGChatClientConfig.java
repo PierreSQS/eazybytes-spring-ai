@@ -14,6 +14,23 @@ import org.springframework.web.client.RestClient;
 
 import java.util.List;
 
+/**
+ * Spring configuration class that provides a pre-configured ChatClient bean named
+ * "webSearchRAGChatClient".
+ * <p>
+ * The created ChatClient is composed with multiple advisors:
+ * - SimpleLoggerAdvisor: logs chat activity
+ * - TokenUsageAuditAdvisor: audits token usage
+ * - MessageChatMemoryAdvisor: attaches chat memory persistence
+ * - RetrievalAugmentationAdvisor: performs retrieval-augmented generation using
+ *   WebSearchDocumentRetriever (backed by the injected RestClient.Builder)
+ * <p>
+ * Required constructor-injected dependencies:
+ * - ChatClient.Builder
+ * - ChatMemory
+ * - RestClient.Builder
+ */
+// NEW in Sec5_Chap61
 @Configuration
 public class WebSearchRAGChatClientConfig {
 
@@ -23,10 +40,16 @@ public class WebSearchRAGChatClientConfig {
         Advisor loggerAdvisor = new SimpleLoggerAdvisor();
         Advisor tokenUsageAdvisor = new TokenUsageAuditAdvisor();
         Advisor memoryAdvisor = MessageChatMemoryAdvisor.builder(chatMemory).build();
+
+        // RetrievalAugmentationAdvisor using WebSearchDocumentRetriever
         var webSearchRAGAdvisor = RetrievalAugmentationAdvisor.builder()
                 .documentRetriever(WebSearchDocumentRetriever.builder()
+                        // configure the restClient to the Web Database
+                        // limits the number of documents/results the retriever
+                        // will return per query to 5
                         .restClientBuilder(restClientBuilder).maxResults(5).build())
                 .build();
+
         return chatClientBuilder
                 .defaultAdvisors(List.of(loggerAdvisor, memoryAdvisor, tokenUsageAdvisor,
                         webSearchRAGAdvisor))

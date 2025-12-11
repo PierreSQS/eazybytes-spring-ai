@@ -33,10 +33,12 @@ public class WebSearchDocumentRetriever implements DocumentRetriever {
                 .baseUrl(TAVILY_BASE_URL)
                 .defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + apiKey)
                 .build();
-        if (resultLimit <= 0) {
-            throw new IllegalArgumentException("resultLimit must be greater than 0");
-        }
+
+        // Alternative to throwing an IllegalStateException like EazyBytes
+        Assert.isTrue(resultLimit > 0, "resultLimit must be greater than 0");
         this.resultLimit = resultLimit;
+
+        logger.info("Created WebSearchDocumentRetriever with resultLimit= {}", resultLimit);
     }
 
     /**
@@ -77,9 +79,12 @@ public class WebSearchDocumentRetriever implements DocumentRetriever {
         return docs;
     }
 
+    // DATA FOR TAVILY-SERVICE API
+    // tavily request payload
     @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
     record TavilyRequestPayload(String query, String searchDepth, int maxResults) {}
 
+    // tavily response payload
     record TavilyResponsePayload(List<Hit> results) {
         record Hit(String title, String url, String content, Double score) {}
     }
@@ -88,27 +93,28 @@ public class WebSearchDocumentRetriever implements DocumentRetriever {
         return new Builder();
     }
 
+    // Builder for this class
     public static class Builder {
-        private RestClient.Builder clientBuilder;
+        private RestClient.Builder restClientBuilder;
         private int resultLimit = DEFAULT_RESULT_LIMIT;
 
+        // prevents external code from calling new Builder() directly
         private Builder() {}
 
-        public Builder restClientBuilder(RestClient.Builder clientBuilder) {
-            this.clientBuilder = clientBuilder;
+        public Builder restClientBuilder(RestClient.Builder restClientBuilder) {
+            this.restClientBuilder = restClientBuilder;
             return this;
         }
 
         public Builder maxResults(int maxResults) {
-            if (maxResults <= 0) {
-                throw new IllegalArgumentException("maxResults must be greater than 0");
-            }
+            // Alternative to throwing an IllegalStateException like EazyBytes
+            Assert.isTrue(resultLimit > 0, "maxResults must be greater than 0");
             this.resultLimit = maxResults;
             return this;
         }
 
         public WebSearchDocumentRetriever build() {
-            return new WebSearchDocumentRetriever(clientBuilder, resultLimit);
+            return new WebSearchDocumentRetriever(restClientBuilder, resultLimit);
         }
     }
 }

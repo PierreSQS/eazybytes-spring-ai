@@ -3,10 +3,8 @@ package com.eazybytes.springai.rag;
 import jakarta.annotation.PostConstruct;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.VectorStore;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 // @Component
 public class RandomDataLoader {
@@ -75,7 +73,7 @@ public class RandomDataLoader {
                 "CRM systems manage customer relationships and sales pipelines.",
                 "SWOT analysis identifies strengths, weaknesses, opportunities, and threats."
         );
-        List<Document> documents = sentences.stream().map(Document::new).collect(Collectors.toList());
+        List<Document> documents = sentences.stream().map(Document::new).toList();
         vectorStore.add(documents);
     }
 

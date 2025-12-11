@@ -20,11 +20,16 @@ import java.util.List;
 @Configuration
 public class TimeChatClientConfig {
 
+
+    // New to Sec6_Chap66
     @Bean("timeChatClient")
     public ChatClient chatClient(ChatClient.Builder chatClientBuilder,
             ChatMemory chatMemory, TimeTools timeTools) {
+        // Introduced in Sec_Chap19
         Advisor loggerAdvisor = new SimpleLoggerAdvisor();
+        // Introduced in Sec_Chap20
         Advisor tokenUsageAdvisor = new TokenUsageAuditAdvisor();
+        // Introduced Sec_Chap44
         Advisor memoryAdvisor = MessageChatMemoryAdvisor.builder(chatMemory).build();
         return chatClientBuilder
                 .defaultTools(timeTools)
