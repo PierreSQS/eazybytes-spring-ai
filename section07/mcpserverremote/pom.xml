@@ -16,6 +16,8 @@
 
 	<properties>
 		<java.version>21</java.version>
+		<!-- Spring AI 1.1.2 was newly released
+		     at the time this module was set up-->
 		<spring-ai.version>1.1.2</spring-ai.version>
 	</properties>
 	<dependencies>
@@ -28,11 +30,12 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
-        <!-- New to Sec7_Chap78
-             sets the app as an MCP-Server using STDIO -->
+        <!-- Introduced in Sec7_Chap85
+             Configures the app as a non-reactive MCP server
+             using remote invocation-->
 		<dependency>
 			<groupId>org.springframework.ai</groupId>
-			<artifactId>spring-ai-starter-mcp-server</artifactId>
+			<artifactId>spring-ai-starter-mcp-server-webmvc</artifactId>
 		</dependency>
 
 		<dependency>
