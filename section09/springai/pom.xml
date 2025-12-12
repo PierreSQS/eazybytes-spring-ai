@@ -76,6 +76,11 @@
 			<scope>test</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+
         <!-- Upgraded to avoid warning about 1.13.0 Qdrant client version -->
         <dependency>
             <groupId>io.qdrant</groupId>
