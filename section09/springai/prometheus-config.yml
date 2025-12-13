@@ -1,3 +1,6 @@
+# Prometheus configuration file to scrape metrics from a Spring Boot application
+# running inside a Docker container.
+# Introduced in Sec9_Chap95
 global:
   scrape_interval: 5s
   evaluation_interval: 5s

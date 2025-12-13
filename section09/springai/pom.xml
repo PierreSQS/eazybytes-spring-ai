@@ -81,6 +81,13 @@
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 
+		<!-- Micrometer dependencies a kind of metrics facade
+		     for tools like Prometheus, Grafana etc -->
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-registry-prometheus</artifactId>
+		</dependency>
+
         <!-- Upgraded to avoid warning about 1.13.0 Qdrant client version -->
         <dependency>
             <groupId>io.qdrant</groupId>
