@@ -15,14 +15,14 @@ public class TimeTools {
     private static final Logger LOGGER = LoggerFactory.getLogger(TimeTools.class);
 
     @Tool(name="getCurrentLocalTime", description = "Get the current time in the user's timezone")
-    String getCurrentLocalTime() {
+    String getCurrentTimeInUserZone() {
         LOGGER.info("Returning the current time in the user's timezone");
         return LocalTime.now().toString();
     }
 
-    @Tool(name = "getCurrentTime",
+    @Tool(name = "getCurrentTimeInTimeZone",
             description = "Get the current time in the specified time zone.")
-    public String getCurrentTime(@ToolParam(
+    public String getCurrentTimeInGivenZone(@ToolParam(
             description = "Value representing the time zone") String timeZone) {
         LOGGER.info("Returning the current time in the timezone {}", timeZone);
         return LocalTime.now(ZoneId.of(timeZone)).toString();
