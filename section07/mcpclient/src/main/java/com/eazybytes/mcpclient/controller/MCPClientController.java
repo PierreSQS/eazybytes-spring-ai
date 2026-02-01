@@ -2,6 +2,7 @@ package com.eazybytes.mcpclient.controller;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
+import org.springframework.ai.tool.ToolCallbackProvider;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,13 +14,16 @@ public class MCPClientController {
 
     private final ChatClient chatClient;
 
-    public MCPClientController(ChatClient.Builder chatClientBuilder) {
+    public MCPClientController(ChatClient.Builder chatClientBuilder, ToolCallbackProvider toolCallbackProvider) {
         this.chatClient = chatClientBuilder
+                // Registering the Tool Callbacks with the Chat Client
+                // See McpServerConfig for Tool Callback definitions in project mcpserverstdio
+                .defaultToolCallbacks(toolCallbackProvider)
                 .defaultAdvisors(new SimpleLoggerAdvisor())
                 .build();
     }
 
-    @GetMapping("/chat")
+    @GetMapping("mcp-client/chat")
     public String chat(@RequestParam String message) {
         return this.chatClient.prompt(message).call().content();
     }
