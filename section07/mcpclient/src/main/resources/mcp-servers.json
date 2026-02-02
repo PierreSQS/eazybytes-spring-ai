@@ -10,6 +10,23 @@
         "C:\\Users\\<username_here>\\Desktop",
         "C:\\Users\\<username_here>\\Downloads"
       ]
+    },
+
+    "github": {
+      "command": "docker",
+      "args": [
+        "run",
+        "--name",
+        "mcp-github-server",
+        "-i",
+        "--rm",
+        "-e",
+        "GITHUB_PERSONAL_ACCESS_TOKEN",
+        "ghcr.io/github/github-mcp-server"
+      ],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${input:<your_github_token_here>}"
+      }
     }
   }
 }
