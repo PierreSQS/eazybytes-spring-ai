@@ -7,8 +7,8 @@
         "npx",
         "-y",
         "@modelcontextprotocol/server-filesystem",
-        "C:\\Users\\<username_here>\\Desktop",
-        "C:\\Users\\<username_here>\\Downloads"
+        "C:\\Users\\messina\\Desktop",
+        "C:\\Users\\messina\\Downloads"
       ]
     },
 
@@ -17,16 +17,13 @@
       "args": [
         "run",
         "--name",
-        "mcp-github-server",
+        "mcp-github-server-eazybytes",
         "-i",
         "--rm",
         "-e",
         "GITHUB_PERSONAL_ACCESS_TOKEN",
         "ghcr.io/github/github-mcp-server"
-      ],
-      "env": {
-        "GITHUB_PERSONAL_ACCESS_TOKEN": "${input:<your_github_token_here>}"
-      }
+      ]
     }
   }
 }
