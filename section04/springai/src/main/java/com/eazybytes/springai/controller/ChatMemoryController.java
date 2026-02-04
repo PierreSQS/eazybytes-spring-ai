@@ -19,10 +19,14 @@ public class ChatMemoryController {
     @GetMapping("/chat-memory")
     public ResponseEntity<String> chatMemory(@RequestHeader("username") String username,
             @RequestParam("message") String message) {
-        return ResponseEntity.ok(chatClient.prompt().user(message).advisors(
+        return ResponseEntity.ok(chatClient
+                .prompt()
+                // New to Sec4_Chap46: setting conversation id to link messages
+                .user(message).advisors(
                     advisorSpec -> advisorSpec.param(CONVERSATION_ID, username)
                 )
-                .call().content());
+                .call()
+                .content());
     }
 
 
