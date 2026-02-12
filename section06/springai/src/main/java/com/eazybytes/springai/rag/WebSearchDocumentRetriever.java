@@ -13,7 +13,6 @@ import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.client.RestClient;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class WebSearchDocumentRetriever implements DocumentRetriever {
@@ -59,9 +58,6 @@ public class WebSearchDocumentRetriever implements DocumentRetriever {
         String q = query.text();
         Assert.hasText(q, "query.text() cannot be empty");
 
-        // same as on line 56
-        // logger.info("##### The Query for searching Document: {} ####", q);
-
         TavilyResponsePayload response = restClient.post()
                 .body(new TavilyRequestPayload(q, "advanced", resultLimit))
                 .retrieve()
@@ -71,17 +67,14 @@ public class WebSearchDocumentRetriever implements DocumentRetriever {
             return List.of();
         }
 
-        List<Document> docs = new ArrayList<>(response.results().size());
-        for (TavilyResponsePayload.Hit hit : response.results()) {
-            // Map each Tavily hit into a Spring AI Document with metadata and score.
-            Document doc = Document.builder()
-                    .text(hit.content())
-                    .metadata("title", hit.title())
-                    .metadata("url", hit.url())
-                    .score(hit.score())
-                    .build();
-            docs.add(doc);
-        }
+        List<Document> docs = response.results
+                .stream()
+                .map(hit -> Document.builder()
+                        .text(hit.content())
+                        .build())
+                .toList();
+
+        logger.info("#### the first Document in the List : {}", docs.getFirst());
         return docs;
     }
 
