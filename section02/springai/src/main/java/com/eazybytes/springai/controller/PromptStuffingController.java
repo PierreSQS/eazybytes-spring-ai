@@ -28,7 +28,7 @@ public class PromptStuffingController {
         return chatClient
                 .prompt()
                 .options(OpenAiChatOptions.builder()
-                        .model(OpenAiApi.ChatModel.CHATGPT_4_O_LATEST).build())
+                        .model(OpenAiApi.ChatModel.GPT_5_CHAT_LATEST).build())
                 .system(systemPromptTemplate)
                 .user(message)
                 .call().content();
