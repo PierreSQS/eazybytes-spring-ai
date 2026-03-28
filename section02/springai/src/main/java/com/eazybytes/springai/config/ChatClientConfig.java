@@ -14,8 +14,11 @@ public class ChatClientConfig {
 
     @Bean
     public ChatClient chatClient(ChatClient.Builder chatClientBuilder) {
-        ChatOptions chatOptions = ChatOptions.builder().model("gpt-4.1-mini")
-                .temperature(0.8).build();
+        ChatOptions chatOptions = ChatOptions.builder()
+                //.model(OpenAiApi.ChatModel.GPT_5_MINI.value)
+                .model("gpt-5.4-mini") // you can also use the model name as a string
+                .temperature(0.8) // default value could be different based on the provider, check the documentation for details
+                .build();
 
         return chatClientBuilder
                 .defaultOptions(chatOptions)
