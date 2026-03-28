@@ -5,6 +5,8 @@ import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
 import org.springframework.ai.converter.ListOutputConverter;
 import org.springframework.ai.converter.MapOutputConverter;
+import org.springframework.ai.openai.OpenAiChatOptions;
+import org.springframework.ai.openai.api.OpenAiApi;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +24,10 @@ public class StructuredOutPutController {
     private final ChatClient chatClient;
 
     public StructuredOutPutController(ChatClient.Builder chatClientBuilder) {
-        this.chatClient = chatClientBuilder.defaultAdvisors(new SimpleLoggerAdvisor())
+        this.chatClient = chatClientBuilder
+                .defaultAdvisors(new SimpleLoggerAdvisor())
+                .defaultOptions(OpenAiChatOptions.builder()
+                        .model(OpenAiApi.ChatModel.GPT_5_CHAT_LATEST).build())
                 .build();
     }
 
