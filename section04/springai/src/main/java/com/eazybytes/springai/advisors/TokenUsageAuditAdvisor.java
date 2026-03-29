@@ -8,25 +8,32 @@ import org.springframework.ai.chat.client.advisor.api.CallAdvisor;
 import org.springframework.ai.chat.client.advisor.api.CallAdvisorChain;
 import org.springframework.ai.chat.metadata.Usage;
 import org.springframework.ai.chat.model.ChatResponse;
+import org.springframework.lang.NonNull;
 
 public class TokenUsageAuditAdvisor implements CallAdvisor {
 
     private static final Logger logger = LoggerFactory.getLogger(TokenUsageAuditAdvisor.class);
 
+    @NonNull
     @Override
-    public ChatClientResponse adviseCall(ChatClientRequest chatClientRequest, CallAdvisorChain callAdvisorChain) {
-        ChatClientResponse chatClientResponse = callAdvisorChain.nextCall(chatClientRequest);
-        ChatResponse chatResponse = chatClientResponse.chatResponse();
-        if(chatResponse.getMetadata() != null) {
-            Usage usage = chatResponse.getMetadata().getUsage();
+    public ChatClientResponse adviseCall(@NonNull ChatClientRequest chatClientRequest, CallAdvisorChain callAdvisorChain) {
+        ChatClientResponse response = callAdvisorChain.nextCall(chatClientRequest);
 
-            if(usage != null) {
-                logger.info("Token usage details : {}",usage.toString());
+        ChatResponse chatResponse = response.chatResponse();
+        if (chatResponse != null) {
+            Usage usage = chatResponse.getMetadata().getUsage();
+            if (usage != null) {
+                logger.info("[TokenUsage] prompt={} tokens, generation={} tokens, total={} tokens",
+                        usage.getPromptTokens(),
+                        usage.getCompletionTokens(),
+                        usage.getTotalTokens());
             }
         }
-        return chatClientResponse;
+
+        return response;
     }
 
+    @NonNull
     @Override
     public String getName() {
         return "TokenUsageAuditAdvisor";
@@ -36,4 +43,5 @@ public class TokenUsageAuditAdvisor implements CallAdvisor {
     public int getOrder() {
         return 1;
     }
+
 }
