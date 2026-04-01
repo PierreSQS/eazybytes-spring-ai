@@ -1,7 +1,10 @@
 package com.eazybytes.springai.controller;
 
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor;
+import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.vectorstore.VectorStore;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +24,7 @@ public class RAGController {
     private final ChatClient chatClient;
     private final VectorStore vectorStore;
 
-    public RAGController(ChatClient chatClient, VectorStore vectorStore) {
+    public RAGController(@Qualifier("chatMemoryChatClient") ChatClient chatClient, VectorStore vectorStore) {
         this.chatClient = chatClient;
         this.vectorStore = vectorStore;
     }
@@ -29,7 +32,14 @@ public class RAGController {
     @GetMapping("/random/chat")
     public ResponseEntity<String> randomChat(@RequestHeader("username") String username,
                                      @RequestParam("message") String message) {
-        return null;
+        String response = chatClient
+                .prompt()
+                .advisors(advisorSpec -> advisorSpec.param(ChatMemory.CONVERSATION_ID, username))
+                .advisors(QuestionAnswerAdvisor.builder(vectorStore).build())
+                .system(promptTemplate)
+                .user(message)
+                .call().content();
+        return ResponseEntity.ok(response);
     }
 
 }
