@@ -8,13 +8,15 @@ import org.springframework.ai.chat.client.advisor.api.CallAdvisor;
 import org.springframework.ai.chat.client.advisor.api.CallAdvisorChain;
 import org.springframework.ai.chat.metadata.Usage;
 import org.springframework.ai.chat.model.ChatResponse;
+import org.springframework.lang.NonNull;
 
 public class TokenUsageAuditAdvisor implements CallAdvisor {
 
     private static final Logger logger = LoggerFactory.getLogger(TokenUsageAuditAdvisor.class);
 
+    @NonNull
     @Override
-    public ChatClientResponse adviseCall(ChatClientRequest chatClientRequest, CallAdvisorChain callAdvisorChain) {
+    public ChatClientResponse adviseCall(@NonNull ChatClientRequest chatClientRequest, CallAdvisorChain callAdvisorChain) {
         ChatClientResponse chatClientResponse = callAdvisorChain.nextCall(chatClientRequest);
         ChatResponse chatResponse = chatClientResponse.chatResponse();
         if(chatResponse.getMetadata() != null) {
