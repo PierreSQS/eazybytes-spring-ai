@@ -29,6 +29,8 @@ public class RAGController {
         this.vectorStore = vectorStore;
     }
 
+    // Since we deactivated the RandomLoader in Sec5_Chap58, now this Handler
+    // will handle the HR Policies Data, which has been loaded in the Vector Store!!!!
     @GetMapping("/random/chat")
     public ResponseEntity<String> randomChat(@RequestHeader("username") String username,
                                      @RequestParam("message") String message) {

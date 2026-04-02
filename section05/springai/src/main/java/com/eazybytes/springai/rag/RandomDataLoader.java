@@ -7,7 +7,10 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component
+// this loader has been deactivated for better demo purposes in Sec5_Chap58
+// In fact we just want to load the Vector Store with the Data of the HRPolicies file
+// introduced in Sec5_Chap58!!!!
+//@Component
 public class RandomDataLoader {
 
     private final VectorStore vectorStore;
