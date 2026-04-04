@@ -38,7 +38,7 @@ public class HRPolicyLoader {
         // Builds a token-based splitter
         // with a fixed chunk size and an upper limit on chunks
         TextSplitter textSplitter = TokenTextSplitter.builder()
-                .withChunkSize(100)
+                .withChunkSize(200)
                 .withMaxNumChunks(400)
                 .build();
 
