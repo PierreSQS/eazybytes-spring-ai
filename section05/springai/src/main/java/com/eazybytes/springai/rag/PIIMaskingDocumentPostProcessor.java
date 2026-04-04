@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.rag.Query;
 import org.springframework.ai.rag.postretrieval.document.DocumentPostProcessor;
+import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 
 import java.util.List;
@@ -32,10 +33,9 @@ public class PIIMaskingDocumentPostProcessor implements DocumentPostProcessor {
     private static final String SSN_PATTERN =
             "\\b\\d{3}-\\d{2}-\\d{4}\\b";
 
+    @NonNull
     @Override
-    public List<Document> process(Query query, List<Document> documents) {
-        Assert.notNull(query, "Query must not be null");
-        Assert.notNull(documents, "Documents list must not be null");
+    public List<Document> process(@NonNull Query query, @NonNull List<Document> documents) {
         Assert.notEmpty(documents, "Documents list must not be empty");
 
         log.debug("Masking sensitive information in documents for query: {}", query.text());
