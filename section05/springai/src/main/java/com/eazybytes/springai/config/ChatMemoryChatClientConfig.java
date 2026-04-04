@@ -53,8 +53,7 @@ public class ChatMemoryChatClientConfig {
     // DocumentPostProcessor that masks PII (emails, phone numbers, SSNs) in retrieved documents
     // before they are passed to the language model as context
     @Bean
-    public RetrievalAugmentationAdvisor retrievalAugmentationAdvisor(VectorStore vectorStore,
-            PIIMaskingDocumentPostProcessor piiMaskingDocumentPostProcessor) {
+    public RetrievalAugmentationAdvisor retrievalAugmentationAdvisor(VectorStore vectorStore) {
         return RetrievalAugmentationAdvisor.builder()
                 .documentRetriever(VectorStoreDocumentRetriever.builder()
                         // Only retrieve documents with a similarity score above 0.5
@@ -66,7 +65,7 @@ public class ChatMemoryChatClientConfig {
                         .vectorStore(vectorStore)
                         .build())
                 // Apply PII masking on retrieved documents before sending them to the model
-                .documentPostProcessors(List.of(piiMaskingDocumentPostProcessor))
+                .documentPostProcessors(List.of(new PIIMaskingDocumentPostProcessor()))
                 .build();
     }
 }
