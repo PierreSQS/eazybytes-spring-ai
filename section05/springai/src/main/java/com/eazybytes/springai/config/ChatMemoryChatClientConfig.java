@@ -1,6 +1,6 @@
 package com.eazybytes.springai.config;
 
-import com.eazybytes.springai.advisors.TokenUsageAuditAdvisor;
+import com.eazybytes.springai.advisors.TokenUsageAuditAdvisor;import com.eazybytes.springai.rag.PIIMaskingDocumentPostProcessor;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
@@ -48,10 +48,13 @@ public class ChatMemoryChatClientConfig {
                 .build();
     }
 
-    // New to chapter (Sec5_Chap60)
-    // RetrievalAugmentationAdvisor for the Bean above
+    // New to chapter (Sec5_Chap60), extended in Sec5_Chap65
+    // RetrievalAugmentationAdvisor for the Bean above, now including a post-retrieval
+    // DocumentPostProcessor that masks PII (emails, phone numbers, SSNs) in retrieved documents
+    // before they are passed to the language model as context
     @Bean
-    public RetrievalAugmentationAdvisor retrievalAugmentationAdvisor(VectorStore vectorStore) {
+    public RetrievalAugmentationAdvisor retrievalAugmentationAdvisor(VectorStore vectorStore,
+            PIIMaskingDocumentPostProcessor piiMaskingDocumentPostProcessor) {
         return RetrievalAugmentationAdvisor.builder()
                 .documentRetriever(VectorStoreDocumentRetriever.builder()
                         // Only retrieve documents with a similarity score above 0.5
@@ -62,6 +65,8 @@ public class ChatMemoryChatClientConfig {
                         // based on the user's query
                         .vectorStore(vectorStore)
                         .build())
+                // Apply PII masking on retrieved documents before sending them to the model
+                .documentPostProcessors(List.of(piiMaskingDocumentPostProcessor))
                 .build();
     }
 }
