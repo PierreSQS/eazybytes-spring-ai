@@ -9,6 +9,8 @@ import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.MessageWindowChatMemory;
 import org.springframework.ai.chat.memory.repository.jdbc.JdbcChatMemoryRepository;
 import org.springframework.ai.rag.advisor.RetrievalAugmentationAdvisor;
+import org.springframework.ai.rag.preretrieval.query.transformation.QueryTransformer;
+import org.springframework.ai.rag.preretrieval.query.transformation.TranslationQueryTransformer;
 import org.springframework.ai.rag.retrieval.search.VectorStoreDocumentRetriever;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.context.annotation.Bean;
@@ -54,7 +56,17 @@ public class ChatMemoryChatClientConfig {
     // before they are passed to the language model as context
     @Bean
     public RetrievalAugmentationAdvisor retrievalAugmentationAdvisor(VectorStore vectorStore) {
+        // TranslationQueryTransformer: translates the user query to English before retrieval.
+        // This is useful when the embedding model is trained on English text and the user
+        // may submit queries in other languages. If the query is already in English (or the
+        // language is unknown), it is returned unchanged.
+        QueryTransformer translationQueryTransformer = TranslationQueryTransformer.builder()
+                .targetLanguage("english")
+                .build();
+
         return RetrievalAugmentationAdvisor.builder()
+                // Translate non-English queries to English before retrieval
+                .queryTransformers(translationQueryTransformer)
                 .documentRetriever(VectorStoreDocumentRetriever.builder()
                         // Only retrieve documents with a similarity score above 0.5
                         .similarityThreshold(0.5)
@@ -64,6 +76,7 @@ public class ChatMemoryChatClientConfig {
                         // based on the user's query
                         .vectorStore(vectorStore)
                         .build())
+
                 // Apply PII masking on retrieved documents before sending them to the model
                 .documentPostProcessors(List.of(new PIIMaskingDocumentPostProcessor()))
                 .build();
