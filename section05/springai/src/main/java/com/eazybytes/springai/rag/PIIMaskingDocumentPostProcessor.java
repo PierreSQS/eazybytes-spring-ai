@@ -33,6 +33,9 @@ public class PIIMaskingDocumentPostProcessor implements DocumentPostProcessor {
     private static final String SSN_PATTERN =
             "\\b\\d{3}-\\d{2}-\\d{4}\\b";
 
+    private PIIMaskingDocumentPostProcessor() {
+    }
+
     @NonNull
     @Override
     public List<Document> process(@NonNull Query query, @NonNull List<Document> documents) {
@@ -50,8 +53,23 @@ public class PIIMaskingDocumentPostProcessor implements DocumentPostProcessor {
                             .replaceAll(PHONE_PATTERN, "[PHONE REDACTED]")
                             .replaceAll(SSN_PATTERN, "[SSN REDACTED]");
                     // Preserve the original document metadata while returning masked content
-                    return new Document(maskedText, document.getMetadata());
+                    return document
+                            // create a mutable copy of the original document
+                            .mutate()
+                            // flag the document so downstream components know PII was scrubbed
+                            .metadata("pii_masked", true)
+                            // replace the original text with the redacted version
+                            .text(maskedText)
+                            .build();
                 })
                 .toList();
+    }
+
+    // Named "builder()" for visual consistency with other Spring AI components used
+    // in the same config chain (e.g. VectorStoreDocumentRetriever.builder()).
+    // Unlike those, this class has nothing to configure, so it skips the
+    // intermediate builder object and returns the instance directly.
+    public static PIIMaskingDocumentPostProcessor builder() {
+        return new PIIMaskingDocumentPostProcessor();
     }
 }

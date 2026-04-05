@@ -81,7 +81,7 @@ public class ChatMemoryChatClientConfig {
                         .build())
 
                 // Apply PII masking on retrieved documents before sending them to the model
-                .documentPostProcessors(List.of(new PIIMaskingDocumentPostProcessor()))
+                .documentPostProcessors(List.of(PIIMaskingDocumentPostProcessor.builder()))
                 .build();
     }
 }
