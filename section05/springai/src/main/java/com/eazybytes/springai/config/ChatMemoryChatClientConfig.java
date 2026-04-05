@@ -55,12 +55,15 @@ public class ChatMemoryChatClientConfig {
     // DocumentPostProcessor that masks PII (emails, phone numbers, SSNs) in retrieved documents
     // before they are passed to the language model as context
     @Bean
-    public RetrievalAugmentationAdvisor retrievalAugmentationAdvisor(VectorStore vectorStore) {
+    public RetrievalAugmentationAdvisor retrievalAugmentationAdvisor(VectorStore vectorStore,
+                                                                     ChatClient.Builder chatClientBuilder) {
         // TranslationQueryTransformer: translates the user query to English before retrieval.
         // This is useful when the embedding model is trained on English text and the user
         // may submit queries in other languages. If the query is already in English (or the
         // language is unknown), it is returned unchanged.
+        // A ChatClient.Builder is required because the transformer uses the LLM to perform translation.
         QueryTransformer translationQueryTransformer = TranslationQueryTransformer.builder()
+                .chatClientBuilder(chatClientBuilder)
                 .targetLanguage("english")
                 .build();
 
