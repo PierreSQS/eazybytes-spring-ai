@@ -55,7 +55,7 @@ All ChatClient instances are configured in `config/` and wired into controllers 
 ### RAG Pipeline (`rag/` package)
 
 - **`HRPolicyLoader`** — `@PostConstruct` bean that reads `Eazybytes_HR_Policies.pdf` via Tika, splits into 200-token chunks, and ingests into Qdrant at startup.
-- **`PIIMaskingDocumentPostProcessor`** — Post-processes retrieved documents before they reach the LLM; redacts emails, phone numbers, and SSNs with `[REDACTED]`.
+- **`PIIMaskingDocumentPostProcessor`** — Post-processes retrieved documents before they reach the LLM; replaces emails → `[EMAIL REDACTED]`, phones → `[PHONE REDACTED]`, SSNs → `[SSN REDACTED]`. Uses a pseudo-builder: `builder()` returns the instance directly (no intermediate builder object) for visual consistency with `VectorStoreDocumentRetriever.builder()`.
 - **`WebSearchDocumentRetriever`** — Calls Tavily API, translates queries to English, maps results to Spring AI `Document` objects.
 
 The `chatMemoryChatClient` RAG is configured with top-3 retrieval at 0.5 similarity threshold and uses a `TranslationQueryTransformer` to normalize non-English queries before vector search.
