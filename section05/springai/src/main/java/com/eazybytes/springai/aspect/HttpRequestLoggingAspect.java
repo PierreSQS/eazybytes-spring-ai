@@ -26,7 +26,8 @@ public class HttpRequestLoggingAspect {
         ServletRequestAttributes attrs =
                 (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
 
-        if (attrs != null) {
+        // guard against building the args string when INFO logging is disabled
+        if (attrs != null && logger.isInfoEnabled()) {
             HttpServletRequest request = attrs.getRequest();
             logger.info("### HTTP {} {} | handler={} | args={} ###",
                     request.getMethod(),
