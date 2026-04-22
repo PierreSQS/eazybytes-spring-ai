@@ -1,5 +1,6 @@
 package com.eazybytes.springai.tools;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.tool.annotation.Tool;
@@ -9,14 +10,14 @@ import org.springframework.stereotype.Component;
 import java.time.LocalTime;
 import java.time.ZoneId;
 
+@Slf4j
 @Component
 public class TimeTools {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TimeTools.class);
 
     @Tool(name="getCurrentLocalTime", description="Get the current time in the user's timezone")
     public String getCurrentLocalTime() {
-        LOGGER.info("###  the current time in the user's timezone ###");
+        log.info("###  the current time in the user's timezone ###");
         return LocalTime.now().toString();
     }
 
@@ -25,7 +26,7 @@ public class TimeTools {
             description = "Get the current time in the specified time zone.")
     public String getCurrentTime(@ToolParam(description = "Value representing the time zone") String timeZone) {
 
-        LOGGER.info("### the current time in the timezone {} ###", timeZone);
+        log.info("### the current time in the timezone {} ###", timeZone);
         return LocalTime.now(ZoneId.of(timeZone)).toString();
     }
 }
