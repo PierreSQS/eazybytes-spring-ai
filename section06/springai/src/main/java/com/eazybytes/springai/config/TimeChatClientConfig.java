@@ -19,18 +19,19 @@ public class TimeChatClientConfig {
     // New to Sec6_Chap66
     @Bean("timeChatClient")
     public ChatClient chatClient(ChatClient.Builder chatClientBuilder, ChatMemory chatMemory,
-                                 TimeTools timetools) {
+                                 TimeTools timetools) { // note the TimeTools param
 
-        // Introduced in Sec_Chap19
+        // Introduced in Sec2_Chap19
         Advisor loggerAdvisor = new SimpleLoggerAdvisor();
 
-        // Introduced in Sec_Chap20
+        // Introduced in Sec2_Chap20
         Advisor tokenUsageAdvisor = new TokenUsageAuditAdvisor();
 
-        // Introduced Sec_Chap44
+        // Introduced Sec2_Chap45
         Advisor memoryAdvisor = MessageChatMemoryAdvisor.builder(chatMemory).build();
         return chatClientBuilder
                 .defaultAdvisors(List.of(loggerAdvisor, memoryAdvisor, tokenUsageAdvisor))
+                // note the defaultTools with TimeTools
                 .defaultTools(timetools)
                 .build();
     }
