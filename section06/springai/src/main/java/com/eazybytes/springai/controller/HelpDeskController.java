@@ -15,6 +15,7 @@ import java.util.Map;
 
 import static org.springframework.ai.chat.memory.ChatMemory.CONVERSATION_ID;
 
+// New in Sec6_Chap71
 @RestController
 @RequestMapping("/api/tools")
 public class HelpDeskController {
@@ -36,6 +37,7 @@ public class HelpDeskController {
                 .user(message + "\n\n###### Relevant Information: ######\n")
                 // AI tooling integration
                 .tools(helpDeskTools)
+                // copying username in the tool context
                 .toolContext(Map.of("username", username))
                 .call()
                 .content();

@@ -14,9 +14,11 @@ import org.springframework.core.io.Resource;
 
 import java.util.List;
 
+// New in Sec6_Chap70
 @Configuration
 public class HelpDeskChatClientConfig {
 
+    // New in Sec6_Chap71
     @Value("classpath:/promptTemplates/helpDeskSystemPromptTemplate.st")
     Resource systemPromptTemplate;
 
@@ -32,6 +34,7 @@ public class HelpDeskChatClientConfig {
 
         return chatClientBuilder
                 .defaultSystem(systemPromptTemplate)
+                // default Tooling
                 .defaultTools(timeTools)
                 .defaultAdvisors(List.of(loggerAdvisor, memoryAdvisor,tokenUsageAdvisor))
                 .build();

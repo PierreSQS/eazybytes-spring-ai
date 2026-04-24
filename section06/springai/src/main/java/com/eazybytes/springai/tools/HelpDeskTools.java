@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+// New in Sec6_Chap71
 @Slf4j
 @Component
 @RequiredArgsConstructor
