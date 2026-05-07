@@ -2,7 +2,6 @@ services:
   # QDRANT VECTOR DATABASE SERVICE
   qdrant:
     image: 'qdrant/qdrant:latest'
-    container_name: qdrant
     ports:
       - '6333:6333'
       - '6334:6334'
