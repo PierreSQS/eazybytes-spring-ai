@@ -1,0 +1,85 @@
+spring:
+  application:
+    name: spring-ai
+
+  # ENABLE COLOR OUTPUT IN LOGS
+  output.ansi.enabled: ALWAYS
+
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY}
+      chat:
+        options:
+          # GPT-5.5 doesn't accept the default temperature of 0.7!!!!
+          model: gpt-5.4-mini
+      # embedding:
+      #   options:
+      #     model: text-embedding-3-small
+
+    chat:
+      memory:
+        repository:
+          jdbc:
+            initialize-schema: always
+            # No more need to specify the schema location as
+            # Spring AI 1.1.4 will auto-detect it from the classpath
+            #spring.ai.chat.memory.repository.jdbc.schema=classpath:/schema/schema-h2db.sql
+
+    vectorstore:
+      qdrant:
+        initialize-schema: true
+        host: localhost
+        port: 6334
+        collection-name: eazybytes
+
+  datasource:
+    url: jdbc:h2:file:~/chatmemory-ai-1.1.4-db;AUTO_SERVER=true
+    driver-class-name: org.h2.Driver
+    username: Test
+    password: ${TESTER_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: update  # ALWAYS UPDATE THE DATABASE SCHEMA ON STARTUP
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        # Enable SQL-Syntax highlighting in the console
+        highlight_sql: true
+
+  h2:
+    console:
+      enabled: true
+
+  docker:
+    compose:
+      stop:
+        command: down
+      skip:
+        in-tests: false  # CONSIDER DOCKER COMPOSE IN TESTS
+
+# LOGGING PATTERN AND LEVELS
+logging:
+  pattern:
+    console: "%green(%d{HH:mm:ss.SSS}) %blue(%-5level) %red([%thread]) %yellow(%logger{15}) - %msg%n"
+  level:
+    org.springframework.ai.chat.client.advisor: DEBUG  # LOGGING LEVEL FOR ADVISOR PACKAGE
+
+management:
+  endpoints:
+    web:
+      exposure:
+        # CONTROLS WHICH ACTUATOR ENDPOINTS ARE EXPOSED OVER HTTP
+        # (here: health, metrics, prometheus)
+        include: health,metrics,prometheus
+  tracing:
+    sampling:
+      probability: 1.0  # CONTROLS WHAT FRACTION OF REQUESTS IS RECORDED
+      # BY THE APP'S TRACING SYSTEM. (HERE 1.0 = 100%, 0.0 = 0%)
+
+# OPENTELEMETRY CONFIGURATION
+opentelemetry:
+  exporter:
+    otlp:
+      endpoint: http://localhost:4317
