@@ -151,6 +151,11 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
+					        <environmentVariables>
+            <TAVILY_SEARCH_API_KEY>${TAVILY_SEARCH_API_KEY}</TAVILY_SEARCH_API_KEY>
+            <OPENAI_API_KEY>${OPENAI_API_KEY}</OPENAI_API_KEY>
+        </environmentVariables>
+
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>
